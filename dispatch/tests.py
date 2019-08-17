@@ -1,5 +1,5 @@
 from django.test import TestCase
-from dispatch.models import Client, Message
+from .models import Client, Message
 
 
 # Create your tests here.
