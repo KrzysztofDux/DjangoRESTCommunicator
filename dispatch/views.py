@@ -12,8 +12,6 @@ from .serializers import ClientSerializer, MessageSerializer
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def login(request):
-    # new_client = Client()
-    # new_client.save()
     new_client = Client.objects.create()
     serializer = ClientSerializer(new_client)
     return JsonResponse(serializer.data, status=status.HTTP_200_OK)
@@ -40,8 +38,10 @@ def get_client(request):
 @permission_classes((permissions.AllowAny,))
 def send_message(request):
     author = Client.objects.get(identity=request.data.get("author"))
-    if not request.data.get("password") is author.password:
-        return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED)
+    # return Response(f'{request.data.get("password")}, {author.password}')
+    # return Response(f'{request.data.get("password")}, {author.password}, {not request.data.get("password") is author.password}')
+    if request.data.get("password") != author.password:
+        return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED, safe=False)
     serializer = MessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -53,8 +53,8 @@ def send_message(request):
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def get_messages(request):
-    addressee = request.data.get('addressee')
-    if not request.data.get("password") is addressee.password:
+    addressee = Client.objects.get(identity=request.data.get('addressee'))
+    if request.data.get("password") != addressee.password:
         return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED)
     serializer = MessageSerializer(Message.get_all_for_client(addressee), many=True)
     return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
