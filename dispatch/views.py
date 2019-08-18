@@ -38,8 +38,6 @@ def get_client(request):
 @permission_classes((permissions.AllowAny,))
 def send_message(request):
     author = Client.objects.get(identity=request.data.get("author"))
-    # return Response(f'{request.data.get("password")}, {author.password}')
-    # return Response(f'{request.data.get("password")}, {author.password}, {not request.data.get("password") is author.password}')
     if request.data.get("password") != author.password:
         return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED, safe=False)
     serializer = MessageSerializer(data=request.data)
