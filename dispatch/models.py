@@ -2,13 +2,19 @@ from django.db import models
 import random
 import string
 
+DEFAULT_LENGTH = 8
+
+
+def get_random_identity():
+    return ''.join(random.choices(string.digits, k=DEFAULT_LENGTH))
+
 
 # Create your models here.
 class Client(models.Model):
-    IDENTITY_LENGTH = 8
+    IDENTITY_LENGTH = DEFAULT_LENGTH
 
-    identity = models.CharField(default=''.join(random.choices(string.digits, k=IDENTITY_LENGTH)),
-                                max_length=IDENTITY_LENGTH, editable=False, primary_key=True, unique=True)
+    identity = models.CharField(default=get_random_identity, max_length=IDENTITY_LENGTH, editable=False,
+                                primary_key=True, unique=True)
 
 
 class Message(models.Model):
