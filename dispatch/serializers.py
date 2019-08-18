@@ -4,10 +4,11 @@ from .models import Message, Client
 
 class ClientSerializer(serializers.Serializer):
     identity = serializers.CharField(max_length=Client.IDENTITY_LENGTH, read_only=True)
+    password = serializers.CharField(max_length=Client.IDENTITY_LENGTH, read_only=True)
 
     class Meta:
         model = Client
-        fields = ('identity',)
+        fields = ('identity', 'password')
 
     def create(self, validated_data):
         return Client.objects.create(**validated_data)

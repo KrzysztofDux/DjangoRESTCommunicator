@@ -3,12 +3,26 @@ import random
 import string
 
 
+DEFAULT_LENGTH = 8
+
+
+def get_random_identity():
+    return ''.join(random.choices(string.digits, k=DEFAULT_LENGTH))
+
+
+def get_random_password():
+    return ''.join(random.choices(string.digits.join(string.ascii_letters), k=DEFAULT_LENGTH))
+
+
 # Create your models here.
 class Client(models.Model):
-    IDENTITY_LENGTH = 8
 
-    identity = models.CharField(default=''.join(random.choices(string.digits, k=IDENTITY_LENGTH)),
-                                max_length=IDENTITY_LENGTH, editable=False, primary_key=True, unique=True)
+    IDENTITY_LENGTH = DEFAULT_LENGTH
+
+    identity = models.CharField(default=get_random_identity, max_length=IDENTITY_LENGTH, editable=False,
+                                primary_key=True, unique=True)
+
+    password = models.CharField(default=get_random_password, max_length=IDENTITY_LENGTH)
 
 
 class Message(models.Model):

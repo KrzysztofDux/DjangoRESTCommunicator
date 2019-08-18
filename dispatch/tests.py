@@ -73,5 +73,5 @@ class MessageTestCase(TestCase):
         return msgs
 
 
-    class MessageSerializerCase(TestCase):
-        
+class MessageSerializerCase(TestCase):
+    pass
