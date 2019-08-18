@@ -24,8 +24,3 @@ class MessageSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Message.objects.create(**validated_data)
-        # author_id = validated_data.get('author')
-        # author = Client.objects.get(identity=author_id)
-        # addressee_id = validated_data.get('addressee')
-        # addressee = Client.objects.get(identity=addressee_id)
-        # return Message(author=author, addressee=addressee, content=validated_data.get('content', "empty message"))

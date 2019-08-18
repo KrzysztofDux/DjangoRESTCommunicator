@@ -71,3 +71,7 @@ class MessageTestCase(TestCase):
         for msg in msgs:
             msg.save()
         return msgs
+
+
+    class MessageSerializerCase(TestCase):
+        
