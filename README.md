@@ -16,11 +16,11 @@ To acquire credentials send empty GET request to the endpoint
 /dispatch/login
 ```
 (this element is just a scaffolding for now, to be replaced with safe approach in the future)
-JSON with two fields is being returned:
+JSON with two fields will be returned:
 ```
 {"identity": "[8 characters long number]", "password": "[8 characters alphanumeric]"}
 ```
-To send message send POST request to the endpoint
+To send a message send POST request to the endpoint
 ```
 /dispatch/send_message
 ```
@@ -30,7 +30,7 @@ with four body parameters:
   - ```addressee``` which is your addresse identity number
   - ```content``` which is the content of message to be sent
 
-to aqcuire messages that has been sent to you sent POST request to the endpoint
+to aqcuire messages that has been sent to you send POST request to the endpoint
 ```
 /dispatch/get_messages
 ```
@@ -38,11 +38,11 @@ with two body parameters:
   - ```addressee``` which is your identity number
   - ```password``` which is your password
   
-Notice that after the message is being downloaded it's being removed from the app's database, so each message will be downlaoded only once.
+Notice that after the message is downloaded it's removed from the app's database, so each message will be downloaded only once.
 
 Currently there's also a
 ```dispatch/get_users```
 endpoint, that returns all the users with their passwords.
-It's convenient for testing, but will of course no longer be available after password will be properly handled.
+It's convenient for testing, but of course will no longer be available after passwords are properly handled.
 
 For testing purposes you can run [test client](https://github.com/KrzysztofDux/DjangoRESTCommunicatorTestClient) in parallel windows and send messages between them.
