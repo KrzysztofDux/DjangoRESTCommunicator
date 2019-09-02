@@ -44,3 +44,5 @@ Currently there's also a
 ```dispatch/get_users```
 endpoint, that returns all the users with their passwords.
 It's convenient for testing, but will of course no longer be available after password will be properly handled.
+
+For testing purposes you can run [test client](https://github.com/KrzysztofDux/DjangoRESTCommunicatorTestClient) in parallel windows and send messages between them.
