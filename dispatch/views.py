@@ -12,8 +12,7 @@ from .serializers import ClientSerializer, MessageSerializer
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def login(request):
-    new_client = Client()
-    new_client.save()
+    new_client = Client.objects.create()
     serializer = ClientSerializer(new_client)
     return JsonResponse(serializer.data, status=status.HTTP_200_OK)
 
@@ -38,6 +37,9 @@ def get_client(request):
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def send_message(request):
+    author = Client.objects.get(identity=request.data.get("author"))
+    if request.data.get("password") != author.password:
+        return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED, safe=False)
     serializer = MessageSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -45,11 +47,13 @@ def send_message(request):
     return JsonResponse(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST, safe=False)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @csrf_exempt
 @permission_classes((permissions.AllowAny,))
 def get_messages(request):
-    addressee = request.query_params.get('addressee')
+    addressee = Client.objects.get(identity=request.data.get('addressee'))
+    if request.data.get("password") != addressee.password:
+        return JsonResponse("authentication failed", status=status.HTTP_401_UNAUTHORIZED)
     serializer = MessageSerializer(Message.get_all_for_client(addressee), many=True)
     return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
 
